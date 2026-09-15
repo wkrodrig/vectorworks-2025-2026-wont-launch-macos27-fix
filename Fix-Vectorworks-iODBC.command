@@ -188,8 +188,9 @@ check_paths() {
 }
 
 has_dependency() {
-  local wanted="$1"
-  /usr/bin/otool -L "$SUPPORT_BIN" 2>/dev/null | /usr/bin/grep -Fq "$wanted"
+  local wanted="$1" dependencies
+  dependencies="$(/usr/bin/otool -L "$SUPPORT_BIN" 2>/dev/null)" || return 1
+  /usr/bin/grep -F "$wanted" <<< "$dependencies" >/dev/null
 }
 
 ensure_brew() {
@@ -227,11 +228,13 @@ ensure_libiodbc() {
   fi
   [[ -f "$NEW_DYLIB" ]] || die "$NEW_DYLIB was not found after installation."
 
-  local dylib_archs
+  local dylib_archs dylib_dependencies
   dylib_archs="$(/usr/bin/lipo -archs "$NEW_DYLIB" 2>/dev/null || true)"
   [[ " $dylib_archs " == *" arm64 "* ]] || die "The Homebrew library does not contain arm64 code: $dylib_archs"
-  /usr/bin/otool -L "$NEW_DYLIB" 2>/dev/null | \
-    /usr/bin/grep -Fq 'compatibility version 4.0.0' || \
+  dylib_dependencies="$(/usr/bin/otool -L "$NEW_DYLIB" 2>/dev/null)" || \
+    die "The installed libiodbc could not be inspected with otool."
+  /usr/bin/grep -F 'compatibility version 4.0.0' \
+    <<< "$dylib_dependencies" >/dev/null || \
     die "The installed libiodbc does not declare the ABI compatibility version 4.0.0 required by Vectorworks."
   ok "An arm64-compatible libiodbc is available at $NEW_DYLIB."
 }

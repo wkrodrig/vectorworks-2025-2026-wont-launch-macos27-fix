@@ -94,10 +94,10 @@ chmod +x Fix-Vectorworks-iODBC.command
 ./Fix-Vectorworks-iODBC.command
 ```
 
-Para la versión 1.0.0, el SHA-256 esperado del script es:
+Para el script actual, el SHA-256 esperado es:
 
 ```text
-a2cd89ae519564c01e21728aa3fd7dc402d776cd27db21745f5d1bf7012ab4cb
+93636230451e16bb683d08e8c4fe489a48f1bf497be333f32a5d2bbc1ae4b6f5
 ```
 
 Si `xattr` muestra `No such xattr`, el archivo no está en cuarentena; continúa con `chmod` y ejecútalo. No uses `xattr -cr` sobre `/Applications`, la carpeta Descargas ni ningún directorio amplio. Elimina la cuarentena solamente del script que hayas verificado.
@@ -153,6 +153,10 @@ No compartas tu número de serie de Vectorworks, Crash Reporter Key, Incident Id
 
 **Wagner R. Ponce**  
 **ANIFONIX**
+
+## Agradecimientos
+
+Gracias a [@lahmadinia](https://github.com/lahmadinia) por identificar el problema de detección de la dependencia en binarios universales causado por la interacción entre `grep -q` y `set -o pipefail`.
 
 ## Licencia
 

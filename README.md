@@ -104,10 +104,10 @@ chmod +x Fix-Vectorworks-iODBC.command
 ./Fix-Vectorworks-iODBC.command
 ```
 
-For version 1.0.0, the expected script SHA-256 is:
+For the current script, the expected SHA-256 is:
 
 ```text
-a2cd89ae519564c01e21728aa3fd7dc402d776cd27db21745f5d1bf7012ab4cb
+93636230451e16bb683d08e8c4fe489a48f1bf497be333f32a5d2bbc1ae4b6f5
 ```
 
 If `xattr` reports `No such xattr`, the file is not quarantined; continue with `chmod` and run it. Do not use `xattr -cr` on `/Applications`, your Downloads folder, or another broad directory. Remove quarantine only from the verified script.
@@ -217,6 +217,10 @@ Do not share your Vectorworks serial number, Crash Reporter Key, Incident Identi
 
 **Wagner R. Ponce**  
 **ANIFONIX**
+
+## Acknowledgements
+
+Thanks to [@lahmadinia](https://github.com/lahmadinia) for identifying the Universal Binary dependency-detection issue caused by the interaction between `grep -q` and `set -o pipefail`.
 
 ## License
 
