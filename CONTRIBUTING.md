@@ -1,12 +1,6 @@
 # Contributing
 
-Thank you for helping validate and improve this workaround.
-
-## Test reports
-
-Use the provided test-report issue template. Vectorworks 2026 reports are especially useful because support for that version is currently experimental and unverified.
-
-Do not publish proprietary Vectorworks binaries or license information. This repository accepts only original scripts, documentation, diagnostic excerpts, and reproducible test results.
+Contributions must not include proprietary Vectorworks binaries, license information, serial numbers, credentials, or unredacted crash data.
 
 ## Pull requests
 
@@ -20,4 +14,3 @@ Keep changes narrowly scoped. Shell changes should:
 - Include corresponding documentation and changelog updates.
 
 By contributing, you agree that your contribution may be distributed under the MIT License.
-

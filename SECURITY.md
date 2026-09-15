@@ -14,13 +14,9 @@ This script modifies a vendor-signed executable inside a Vectorworks installatio
 - It downloads the Homebrew installer only from Homebrew's official GitHub repository over HTTPS, and only after user confirmation unless `--yes` is supplied.
 - If Gatekeeper blocks the downloaded script, verify its published SHA-256 before removing `com.apple.quarantine`, and remove that attribute from the script only. Do not clear quarantine recursively from broad directories.
 
-## Reporting a vulnerability
-
-Open a GitHub issue containing a minimal reproduction and no secrets. If public disclosure would place users at risk, contact the repository owner privately through the contact method shown on their GitHub profile before publishing technical details.
-
 ## Privacy
 
-Before attaching Terminal output or a macOS crash report, remove:
+Before sharing Terminal output or a macOS crash report, remove:
 
 - Vectorworks serial numbers
 - Crash Reporter Keys

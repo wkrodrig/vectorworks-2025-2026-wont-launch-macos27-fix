@@ -76,7 +76,7 @@ It does **not** disable System Integrity Protection and does **not** create or m
 
 ## Installation and normal use
 
-1. Download `Fix-Vectorworks-iODBC.command` from this repository or the latest release.
+1. Download `Fix-Vectorworks-iODBC.command` from this repository.
 2. Open Terminal in the download directory.
 3. Make it executable:
 
@@ -94,7 +94,7 @@ You can subsequently open it by double-clicking. If macOS blocks the first launc
 
 ### If macOS says the file cannot be opened
 
-Files downloaded from the Internet may receive Apple's `com.apple.quarantine` attribute. First verify that the downloaded script matches this release, and then remove that attribute from this file only:
+Files downloaded from the Internet may receive Apple's `com.apple.quarantine` attribute. First verify the downloaded script against the checksum published in this repository, and then remove that attribute from this file only:
 
 ```bash
 cd "$HOME/Downloads"
@@ -192,29 +192,19 @@ An affected, unpatched binary reports `/usr/lib/libiodbc.2.dylib`. A successfull
 - Vectorworks 2026 support is experimental until users confirm the dependency, successful startup, signing, and rollback on a real installation.
 - The preferred long-term solution is an official Vectorworks update built for macOS 27.
 
-## Reporting results
+## Privacy
 
-Use the GitHub issue templates and include:
-
-- Mac model and processor
-- Exact macOS version and build
-- Vectorworks edition, version, and update number
-- Clean installation or operating-system upgrade
-- The iODBC line produced by `otool -L`
-- Whether repair, launch, verification, and rollback succeeded
-
-Never publish your Vectorworks serial number, Crash Reporter Key, Incident Identifier, passwords, tokens, or other personal information.
+Do not share your Vectorworks serial number, Crash Reporter Key, Incident Identifier, passwords, tokens, or other personal information.
 
 ## Project files
 
 - `Fix-Vectorworks-iODBC.command` — standalone repair and rollback script
 - `README.md` — English documentation
 - `README.es.md` — Spanish documentation
-- `CHANGELOG.md` — release history
+- `CHANGELOG.md` — change history
 - `SECURITY.md` — security and privacy guidance
-- `CONTRIBUTING.md` — contribution instructions
 - `LICENSE` — MIT License
-- `SHA256SUMS.txt` — release file checksums
+- `SHA256SUMS.txt` — file checksum
 
 ## References
 
@@ -230,4 +220,4 @@ Never publish your Vectorworks serial number, Crash Reporter Key, Incident Ident
 
 ## License
 
-Released under the [MIT License](LICENSE).
+Licensed under the [MIT License](LICENSE).

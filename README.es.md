@@ -84,7 +84,7 @@ Después podrás abrirlo con doble clic. Si macOS bloquea la primera apertura, h
 
 ### Si macOS dice que el archivo no se puede abrir
 
-Los archivos descargados de Internet pueden recibir el atributo `com.apple.quarantine` de Apple. Primero verifica que el script descargado corresponda a esta versión y después elimina ese atributo únicamente de este archivo:
+Los archivos descargados de Internet pueden recibir el atributo `com.apple.quarantine` de Apple. Primero verifica el script descargado mediante el checksum publicado en este repositorio y después elimina ese atributo únicamente de este archivo:
 
 ```bash
 cd "$HOME/Downloads"
@@ -145,11 +145,9 @@ Cada copia contiene el ejecutable original, su checksum SHA-256, metadatos y la 
 - La compatibilidad con Vectorworks 2026 seguirá siendo experimental hasta comprobar reparación, inicio, firma y rollback en una instalación real.
 - La solución definitiva debe ser una actualización oficial de Vectorworks para macOS 27.
 
-## Cómo reportar resultados
+## Privacidad
 
-Incluye modelo y procesador del Mac, versión/build de macOS, edición y actualización de Vectorworks, salida de iODBC obtenida con `otool -L`, y resultado de reparación, inicio y rollback.
-
-Nunca publiques tu número de serie de Vectorworks, Crash Reporter Key, Incident Identifier, contraseñas, tokens o información personal.
+No compartas tu número de serie de Vectorworks, Crash Reporter Key, Incident Identifier, contraseñas, tokens ni otra información personal.
 
 ## Autor
 
@@ -158,4 +156,4 @@ Nunca publiques tu número de serie de Vectorworks, Crash Reporter Key, Incident
 
 ## Licencia
 
-Publicado bajo la [Licencia MIT](LICENSE).
+Disponible bajo la [Licencia MIT](LICENSE).
