@@ -75,6 +75,26 @@ chmod +x Fix-Vectorworks-iODBC.command
 
 Después podrás abrirlo con doble clic. Si macOS bloquea la primera apertura, haz Control-clic, selecciona **Abrir** y confirma.
 
+### Si macOS dice que el archivo no se puede abrir
+
+Los archivos descargados de Internet pueden recibir el atributo `com.apple.quarantine` de Apple. Primero verifica que el script descargado corresponda a esta versión y después elimina ese atributo únicamente de este archivo:
+
+```bash
+cd "$HOME/Downloads"
+shasum -a 256 Fix-Vectorworks-iODBC.command
+xattr -d com.apple.quarantine Fix-Vectorworks-iODBC.command
+chmod +x Fix-Vectorworks-iODBC.command
+./Fix-Vectorworks-iODBC.command
+```
+
+Para la versión 1.0.0, el SHA-256 esperado del script es:
+
+```text
+8623d3253349bb03a791faf31b866eafa6909e9cf77306601912249c7b6f55a1
+```
+
+Si `xattr` muestra `No such xattr`, el archivo no está en cuarentena; continúa con `chmod` y ejecútalo. No uses `xattr -cr` sobre `/Applications`, la carpeta Descargas ni ningún directorio amplio. Elimina la cuarentena solamente del script que hayas verificado.
+
 Seleccionar una versión explícitamente:
 
 ```bash

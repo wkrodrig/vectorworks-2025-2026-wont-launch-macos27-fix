@@ -85,6 +85,26 @@ It does **not** disable System Integrity Protection and does **not** create or m
 
 You can subsequently open it by double-clicking. If macOS blocks the first launch, Control-click the file, choose **Open**, and confirm.
 
+### If macOS says the file cannot be opened
+
+Files downloaded from the Internet may receive Apple's `com.apple.quarantine` attribute. First verify that the downloaded script matches this release, and then remove that attribute from this file only:
+
+```bash
+cd "$HOME/Downloads"
+shasum -a 256 Fix-Vectorworks-iODBC.command
+xattr -d com.apple.quarantine Fix-Vectorworks-iODBC.command
+chmod +x Fix-Vectorworks-iODBC.command
+./Fix-Vectorworks-iODBC.command
+```
+
+For version 1.0.0, the expected script SHA-256 is:
+
+```text
+8623d3253349bb03a791faf31b866eafa6909e9cf77306601912249c7b6f55a1
+```
+
+If `xattr` reports `No such xattr`, the file is not quarantined; continue with `chmod` and run it. Do not use `xattr -cr` on `/Applications`, your Downloads folder, or another broad directory. Remove quarantine only from the verified script.
+
 The script may request your administrator password. Characters are not displayed while typing a password in Terminal; this is normal.
 
 ## Command-line options
