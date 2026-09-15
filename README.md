@@ -24,11 +24,17 @@ The script refuses to patch either version unless it finds the exact dependency:
 
 ## Symptoms
 
-Vectorworks quits during startup and may display a localized message indicating that its compatibility or Support library could not be loaded. In the confirmed case, the Spanish dialog said:
+Vectorworks quits during startup and may display a localized message indicating that its compatibility or Support library could not be loaded.
 
-```text
-Error al cargar la biblioteca de compatibilidad
-```
+### Error-dialog examples
+
+The English screenshot shows the Vectorworks wording **“Failure loading Support library.”** It is a separate visual example, not the capture from the confirmed macOS 27 test.
+
+![Vectorworks dialog saying Failure loading Support library](assets/screenshots/vectorworks-support-library-error-en.webp)
+
+The Spanish screenshot below is the dialog captured in the confirmed case: **“Error al cargar la biblioteca de compatibilidad.”**
+
+![Vectorworks dialog saying Error al cargar la biblioteca de compatibilidad](assets/screenshots/vectorworks-compatibility-library-error-es.webp)
 
 Running the application under LLDB explicitly revealed:
 

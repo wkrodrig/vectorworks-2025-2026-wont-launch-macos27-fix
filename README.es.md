@@ -24,11 +24,17 @@ El script se niega a modificar cualquiera de las dos versiones si no encuentra e
 
 ## Síntomas
 
-Vectorworks se cierra durante el inicio y puede mostrar un mensaje localizado indicando que no pudo cargar su biblioteca de compatibilidad o Support. En el caso confirmado, el diálogo en español decía:
+Vectorworks se cierra durante el inicio y puede mostrar un mensaje localizado indicando que no pudo cargar su biblioteca de compatibilidad o Support.
 
-```text
-Error al cargar la biblioteca de compatibilidad
-```
+### Ejemplos del diálogo de error
+
+La captura en inglés muestra el texto de Vectorworks **“Failure loading Support library.”** Es un ejemplo visual independiente, no la captura de la prueba confirmada en macOS 27.
+
+![Diálogo de Vectorworks que dice Failure loading Support library](assets/screenshots/vectorworks-support-library-error-en.webp)
+
+La siguiente captura en español corresponde al diálogo observado en el caso confirmado: **“Error al cargar la biblioteca de compatibilidad.”**
+
+![Diálogo de Vectorworks que dice Error al cargar la biblioteca de compatibilidad](assets/screenshots/vectorworks-compatibility-library-error-es.webp)
 
 Al ejecutarlo mediante LLDB apareció explícitamente:
 
