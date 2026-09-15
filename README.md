@@ -107,7 +107,7 @@ chmod +x Fix-Vectorworks-iODBC.command
 For version 1.0.0, the expected script SHA-256 is:
 
 ```text
-8623d3253349bb03a791faf31b866eafa6909e9cf77306601912249c7b6f55a1
+a2cd89ae519564c01e21728aa3fd7dc402d776cd27db21745f5d1bf7012ab4cb
 ```
 
 If `xattr` reports `No such xattr`, the file is not quarantined; continue with `chmod` and run it. Do not use `xattr -cr` on `/Applications`, your Downloads folder, or another broad directory. Remove quarantine only from the verified script.

@@ -29,6 +29,11 @@ ok()   { printf '[OK]   %s\n' "$*"; }
 warn() { printf '[WARNING] %s\n' "$*" >&2; }
 die()  { printf '\n[ERROR] %s\n' "$*" >&2; exit 1; }
 
+show_banner() {
+  printf '\nVectorworks 2025/2026 macOS 27 iODBC Fix\n'
+  printf 'Community workaround created by Wagner R. Ponce — ANIFONIX\n'
+}
+
 pause_if_double_clicked() {
   if [[ -t 0 && "${TERM_PROGRAM:-}" == "Apple_Terminal" ]]; then
     printf '\nPress Enter to close... '
@@ -69,6 +74,8 @@ If one supported version is installed, it is selected automatically. Use
 --version when both versions are installed or for unattended operation.
 EOF
 }
+
+show_banner
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
