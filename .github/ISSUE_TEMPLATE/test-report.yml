@@ -1,0 +1,74 @@
+name: Compatibility test report
+description: Report a successful or unsuccessful test on Vectorworks 2025 or 2026
+title: "[Test]: "
+labels:
+  - compatibility
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing. Remove serial numbers, Crash Reporter Keys, Incident Identifiers, usernames, and other personal information before submitting.
+  - type: dropdown
+    id: version
+    attributes:
+      label: Vectorworks version
+      options:
+        - Vectorworks 2025
+        - Vectorworks 2026 (experimental)
+    validations:
+      required: true
+  - type: input
+    id: update
+    attributes:
+      label: Vectorworks update and build
+      placeholder: "Update 8, build 841679"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and build
+      placeholder: "macOS 27.0 (26A428)"
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Mac model and processor
+      placeholder: "MacBook Pro, Apple M-series"
+    validations:
+      required: true
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation type
+      options:
+        - Clean Vectorworks installation on macOS 27
+        - Existing installation after upgrading macOS
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: dependency
+    attributes:
+      label: iODBC dependency before repair
+      description: Paste only the iODBC line from otool -L. Remove personal information.
+      render: shell
+    validations:
+      required: true
+  - type: checkboxes
+    id: results
+    attributes:
+      label: Results
+      options:
+        - label: The backup was created successfully
+        - label: The dependency was changed successfully
+        - label: Code-signing verification succeeded
+        - label: Vectorworks launched successfully
+        - label: Rollback was tested successfully
+  - type: textarea
+    id: details
+    attributes:
+      label: Additional details
+      description: Include relevant messages, but do not attach proprietary files or secrets.
+
