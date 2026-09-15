@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If this workaround helps you, please cite the project and its author."
+title: "Fix Vectorworks 2025/2026 Not Launching on macOS 27"
+type: software
+authors:
+  - family-names: "Ponce"
+    given-names: "Wagner R."
+version: 1.0.0
+date-released: 2026-09-14
+license: MIT
+abstract: "An unofficial reversible community workaround for the Failure loading Support Library error that prevents Vectorworks 2025/2026 from launching on Apple Silicon Macs running macOS 27."
+keywords:
+  - Vectorworks
+  - macOS 27
+  - iODBC
+  - Apple Silicon
+  - ANIFONIX
