@@ -8,7 +8,7 @@ authors:
 version: 1.0.0
 date-released: 2026-09-14
 license: MIT
-abstract: "An unofficial reversible community workaround for the Failure loading Support Library error that prevents Vectorworks 2025/2026 from launching on Apple Silicon Macs running macOS 27."
+abstract: "An unofficial reversible community workaround for a Vectorworks startup failure caused when Support.vwlibrary depends on the missing /usr/lib/libiodbc.2.dylib path on Apple Silicon Macs running macOS 27."
 keywords:
   - Vectorworks
   - macOS 27

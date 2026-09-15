@@ -2,7 +2,7 @@
 
 [Read in English](README.md)
 
-Solución comunitaria, no oficial y reversible para el error **“Failure loading Support Library”**, que impide iniciar Vectorworks 2025 o 2026 en Macs Apple Silicon con macOS 27. El problema aparece cuando `Support.vwlibrary` depende de la ruta ausente `/usr/lib/libiodbc.2.dylib`.
+Solución comunitaria, no oficial y reversible para un fallo de inicio de Vectorworks en Macs Apple Silicon con macOS 27. En el caso confirmado de Vectorworks 2025, `Support.vwlibrary` no podía cargar porque dependía de la ruta ausente `/usr/lib/libiodbc.2.dylib`.
 
 Creada por **Wagner R. Ponce — ANIFONIX**.
 
@@ -24,17 +24,18 @@ El script se niega a modificar cualquiera de las dos versiones si no encuentra e
 
 ## Síntomas
 
-Vectorworks se cierra durante el inicio y puede mostrar:
+Vectorworks se cierra durante el inicio y puede mostrar un mensaje localizado indicando que no pudo cargar su biblioteca de compatibilidad o Support. En el caso confirmado, el diálogo en español decía:
 
 ```text
-Failure loading Support Library
+Error al cargar la biblioteca de compatibilidad
 ```
 
-Al ejecutarlo desde Terminal puede aparecer:
+Al ejecutarlo mediante LLDB apareció explícitamente:
 
 ```text
+Error loading .../Plug-ins/Support.vwlibrary/Contents/MacOS/Support
 Library not loaded: /usr/lib/libiodbc.2.dylib
-Referenced from: .../Plug-ins/Support.vwlibrary/Contents/MacOS/Support
+Reason: tried: '/usr/lib/libiodbc.2.dylib' (no such file), ...
 ```
 
 No utilices esta solución para una caída distinta o para otra biblioteca ausente.

@@ -3,7 +3,7 @@
 ## Suggested repository settings
 
 - **Repository name:** `vectorworks-2025-2026-wont-launch-macos27-fix`
-- **Description:** `Fixes “Failure loading Support Library” preventing Vectorworks 2025/2026 from launching on macOS 27 Apple Silicon.`
+- **Description:** `Workaround for a Vectorworks 2025/2026 startup failure involving Support.vwlibrary and missing iODBC on macOS 27 Apple Silicon.`
 - **Visibility:** Public
 - **License:** MIT
 - **Default branch:** `main`

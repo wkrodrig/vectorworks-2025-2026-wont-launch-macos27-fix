@@ -2,7 +2,7 @@
 
 [Leer en español](README.es.md)
 
-An unofficial, reversible community workaround for the **“Failure loading Support Library”** error that prevents Vectorworks 2025 or 2026 from launching on Apple Silicon Macs running macOS 27. The failure occurs when `Support.vwlibrary` depends on the missing system path `/usr/lib/libiodbc.2.dylib`.
+An unofficial, reversible community workaround for a Vectorworks startup failure on Apple Silicon Macs running macOS 27. In the confirmed Vectorworks 2025 case, `Support.vwlibrary` could not load because it depended on the missing system path `/usr/lib/libiodbc.2.dylib`.
 
 Created by **Wagner R. Ponce — ANIFONIX**.
 
@@ -14,7 +14,7 @@ Created by **Wagner R. Ponce — ANIFONIX**.
 | Vectorworks version | Status | Notes |
 |---|---|---|
 | Vectorworks 2025 Update 8 | Tested | Confirmed working on an Apple Silicon Mac with macOS 27.0. |
-| Vectorworks 2026 | Experimental | A similar “Failure loading Support Library” problem has been reported, but this repair has not yet been independently tested on 2026. |
+| Vectorworks 2026 | Experimental | A similar startup problem involving the Support library has been reported, but this repair has not yet been independently tested on 2026. |
 
 The script refuses to patch either version unless it finds the exact dependency:
 
@@ -24,17 +24,18 @@ The script refuses to patch either version unless it finds the exact dependency:
 
 ## Symptoms
 
-Vectorworks quits during startup and may display:
+Vectorworks quits during startup and may display a localized message indicating that its compatibility or Support library could not be loaded. In the confirmed case, the Spanish dialog said:
 
 ```text
-Failure loading Support Library
+Error al cargar la biblioteca de compatibilidad
 ```
 
-Starting the application from Terminal may reveal:
+Running the application under LLDB explicitly revealed:
 
 ```text
+Error loading .../Plug-ins/Support.vwlibrary/Contents/MacOS/Support
 Library not loaded: /usr/lib/libiodbc.2.dylib
-Referenced from: .../Plug-ins/Support.vwlibrary/Contents/MacOS/Support
+Reason: tried: '/usr/lib/libiodbc.2.dylib' (no such file), ...
 ```
 
 Do not use this workaround for an unrelated crash or a different missing library.
