@@ -23,32 +23,25 @@ You need an **Apple Silicon Mac (M1, M2, M3 or newer), macOS 27, and Vectorworks
 
 Click [Download the script](https://github.com/wkrodrig/vectorworks-2025-2026-wont-launch-macos27-fix/raw/refs/heads/main/Fix-Vectorworks-iODBC.command). Save it in **Downloads**, keeping the exact name `Fix-Vectorworks-iODBC.command`. If your browser displays the script as text, use its Save option to save the file with that name, without adding `.txt`. You do not need to download the whole repository.
 
-### 3. Open Terminal and check the download
+### 3. Open Terminal — do not double-click yet
 
-Close Vectorworks. Press **Command + Space**, type **Terminal**, and press **Return**. Copy the following two lines into Terminal and press Return:
+Close Vectorworks. Press **Command + Space**, type **Terminal**, and press **Return**.
 
-```bash
-cd "$HOME/Downloads"
-shasum -a 256 Fix-Vectorworks-iODBC.command
-```
+### 4. If macOS blocks the downloaded script, allow this file and run it
 
-The long string must match this exactly (the filename printed afterward is normal):
+macOS may refuse to open a file downloaded from the Internet. **Only do this for the script downloaded from this repository, after reviewing it and deciding you trust it.** These commands remove the download quarantine attribute from this one file and give it permission to run. They do not make unknown scripts safe. The optional SHA-256 check is in the technical section below.
 
-```text
-f4a450a3de2f8878b8f437a6eeaa3dc6694df583620a53031f6d3adcc72dc37b
-```
-
-**If it does not match, stop. Do not run that file.** If Terminal says `No such file or directory`, check that the file is in Downloads with the exact name above.
-
-### 4. Run the checked script
-
-Copy this line into the same Terminal window and press Return:
+Copy these three lines into Terminal and press Return:
 
 ```bash
-/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command"
+xattr -d com.apple.quarantine "$HOME/Downloads/Fix-Vectorworks-iODBC.command"
+chmod +x "$HOME/Downloads/Fix-Vectorworks-iODBC.command"
+"$HOME/Downloads/Fix-Vectorworks-iODBC.command"
 ```
 
-This Terminal method does not require double-clicking the file or making it executable. Do not disable SIP or Gatekeeper. Running a shell script still executes code: review it before running it.
+If `xattr` says **`No such xattr`**, the file was not quarantined; continue with the other two lines. If you see **`No such file or directory`**, check that the file is in Downloads with the exact name above, not ending in `.txt` or renamed with `(1)`. After these steps you can also double-click the script in Finder.
+
+Do not disable SIP or Gatekeeper, and do not remove quarantine from an entire folder. If macOS reports malware rather than an ordinary downloaded-file restriction, stop; do not override that warning.
 
 ### 5. Answer the questions and wait
 
