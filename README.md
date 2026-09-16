@@ -17,7 +17,7 @@ You do not need to understand the technical sections below. Follow these steps i
 
 You need an **Apple Silicon Mac (M1, M2, M3 or newer), macOS 27, and Vectorworks already installed** in its normal Applications folder. This is for the startup error **“Failure loading Support library.”** The script checks whether the specific missing library is present in the dependency list; the dialog alone does not prove this fix applies.
 
-**2025 Update 8: tested. 2024 and 2026: experimental and unverified.** This is an unofficial workaround that changes a Vectorworks component and creates a backup, not a Vectorworks installer or a fix for every crash.
+**2025 Update 8: tested. 2024: community-reported success, details pending confirmation. 2026: experimental and unverified.** The script still treats 2024 as experimental. This is an unofficial workaround that changes a Vectorworks component and creates a backup, not a Vectorworks installer or a fix for every crash.
 
 ### 2. Download the script
 
@@ -72,9 +72,13 @@ The rest of this page explains compatibility, error screenshots, advanced option
 
 | Vectorworks version | Status | Notes |
 |---|---|---|
-| Vectorworks 2024 | Experimental, unverified | No successful repair has been confirmed. Applicable only if Support contains arm64 code and the exact missing iODBC dependency. |
+| Vectorworks 2024 | Experimental; community-reported success | P-SH reported success in a private Vectorworks forum conversation. Script revision, macOS version and Mac architecture are pending confirmation. Applicable only if Support contains arm64 code and the exact missing iODBC dependency. |
 | Vectorworks 2025 Update 8 | Tested | Confirmed working on an Apple Silicon Mac with macOS 27.0. |
 | Vectorworks 2026 | Experimental | A similar startup problem involving the Support library has been reported, but this repair has not yet been independently tested on 2026. |
+
+### Vectorworks 2024 community report
+
+Thank you to **P-SH** for reporting successful use with Vectorworks 2024 and 2025 through a private conversation on the Vectorworks forum. The reporter was unsure whether the downloaded script included the latest 2024 update. **Community-reported success; script revision and system details pending confirmation.** This is not independent verification of the current script or general macOS 27 compatibility. Vectorworks 2024 remains experimental; successful startup, signing and rollback have not all been verified for that installation. The private message screenshot is not published here.
 
 The script refuses to patch any version unless it finds the exact dependency:
 
