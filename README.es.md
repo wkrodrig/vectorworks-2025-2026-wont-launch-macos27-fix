@@ -9,6 +9,72 @@ Creada por **Wagner R. Ponce — ANIFONIX**.
 > [!IMPORTANT]
 > Este proyecto no está afiliado, respaldado ni soportado por Vectorworks, Inc., Nemetschek, Apple o Homebrew. Modifica un componente firmado de Vectorworks. Revisa el código, conserva una copia de seguridad y úsalo bajo tu propia responsabilidad.
 
+## Empieza aquí — guía fácil paso a paso
+
+No necesitas entender la información técnica del final. Sigue estos pasos en orden.
+
+### 1. Comprueba si esta solución es para ti
+
+Necesitas un **Mac Apple Silicon (M1, M2, M3 o posterior), macOS 27 y Vectorworks ya instalado** en su carpeta habitual de Aplicaciones. Esta solución es para el error de inicio **“Error al cargar la biblioteca de compatibilidad.”** En inglés: **“Failure loading Support library.”** El script comprueba si aparece la dependencia específica; el mensaje de la ventana por sí solo no confirma que este parche sea adecuado.
+
+**2025 Update 8: probado. 2024 y 2026: experimentales y no comprobados.** Es una solución no oficial que modifica un componente de Vectorworks y crea una copia de seguridad. No instala Vectorworks ni arregla cualquier tipo de cierre inesperado.
+
+### 2. Descarga el script
+
+Pulsa [Descargar el script](https://github.com/wkrodrig/vectorworks-2025-2026-wont-launch-macos27-fix/raw/refs/heads/main/Fix-Vectorworks-iODBC.command). Guárdalo en **Descargas**, conservando el nombre exacto `Fix-Vectorworks-iODBC.command`. Si el navegador muestra el código como texto, usa su opción de guardar para guardar el archivo con ese nombre, sin añadir `.txt`. No necesitas descargar todo el repositorio.
+
+### 3. Abre Terminal y comprueba la descarga
+
+Cierra Vectorworks. Pulsa **Command + Espacio**, escribe **Terminal** y pulsa **Enter**. Copia estas dos líneas en Terminal y pulsa Enter:
+
+```bash
+cd "$HOME/Downloads"
+shasum -a 256 Fix-Vectorworks-iODBC.command
+```
+
+La cadena larga debe coincidir exactamente con esta (es normal que después aparezca el nombre del archivo):
+
+```text
+f4a450a3de2f8878b8f437a6eeaa3dc6694df583620a53031f6d3adcc72dc37b
+```
+
+**Si no coincide, detente. No ejecutes ese archivo.** Si aparece `No such file or directory`, comprueba que esté en Descargas y tenga el nombre exacto indicado arriba.
+
+### 4. Ejecuta el script comprobado
+
+Copia esta línea en la misma ventana de Terminal y pulsa Enter:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command"
+```
+
+Este método desde Terminal no requiere abrir el archivo con doble clic ni darle permisos de ejecución. No desactives SIP ni Gatekeeper. Ejecutar un script también ejecuta código: revísalo antes de usarlo.
+
+### 5. Responde las preguntas y espera
+
+- Si tienes varias versiones de Vectorworks, escribe el año que quieres reparar y pulsa Enter.
+- Lee cada pregunta. Escribe `y` y pulsa Enter solamente si estás de acuerdo. Homebrew es una herramienta para instalar la biblioteca que falta; si no está instalado, el script pide permiso antes de instalarlo.
+- Si pide la contraseña de administrador del Mac, escríbela y pulsa Enter. **No aparecen puntos ni letras mientras escribes; es normal.**
+- Mantén Terminal abierto y la conexión a Internet mientras termina la instalación y reparación. Si hace falta instalar herramientas de desarrollo, sigue el aviso de macOS y vuelve a ejecutar el script cuando termine esa instalación.
+
+Al terminar, el script normalmente abre Vectorworks. Si se detiene con un error, no modifiques la aplicación manualmente ni pruebes comandos ajenos a esta guía. Puede significar que esta solución no aplica a tu caso. Si indica que ya está parcheado, no necesitas aplicar el cambio otra vez.
+
+### Opcional: deshacer la reparación
+
+Cierra Vectorworks, abre Terminal y ejecuta este comando. Sustituye `2025` por `2024` o `2026` si esa fue la versión reparada:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --rollback --version 2025
+```
+
+Restaura la copia más reciente creada por el script para esa versión; puede volver el error de inicio original. No desinstala Homebrew ni su biblioteca.
+
+---
+
+## Información técnica — lectura opcional
+
+El resto de esta página explica la compatibilidad, muestra los errores y describe las opciones avanzadas y el funcionamiento del parche. **No necesitas ejecutar los comandos de abajo para el uso normal.**
+
 ## Compatibilidad
 
 | Versión | Estado | Observación |
@@ -17,7 +83,7 @@ Creada por **Wagner R. Ponce — ANIFONIX**.
 | Vectorworks 2025 Update 8 | Probada | Funcionó en un Mac Apple Silicon con macOS 27.0. |
 | Vectorworks 2026 | Experimental | Se ha reportado un error similar, pero esta reparación todavía no ha sido probada de forma independiente en 2026. |
 
-El script se niega a modificar cualquiera de las dos versiones si no encuentra exactamente:
+El script se niega a modificar cualquier versión si no encuentra exactamente:
 
 ```text
 /usr/lib/libiodbc.2.dylib
