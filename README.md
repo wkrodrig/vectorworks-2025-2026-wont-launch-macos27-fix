@@ -1,4 +1,4 @@
-# Fix Vectorworks 2025/2026 Not Launching on macOS 27
+# Fix Vectorworks 2024/2025/2026 Not Launching on macOS 27
 
 [Leer en español](README.es.md)
 
@@ -13,6 +13,7 @@ Created by **Wagner R. Ponce — ANIFONIX**.
 
 | Vectorworks version | Status | Notes |
 |---|---|---|
+| Vectorworks 2024 | Experimental, unverified | No successful repair has been confirmed. Applicable only if Support contains arm64 code and the exact missing iODBC dependency. |
 | Vectorworks 2025 Update 8 | Tested | Confirmed working on an Apple Silicon Mac with macOS 27.0. |
 | Vectorworks 2026 | Experimental | A similar startup problem involving the Support library has been reported, but this repair has not yet been independently tested on 2026. |
 
@@ -51,9 +52,9 @@ Do not use this workaround for an unrelated crash or a different missing library
 The script:
 
 - Requires macOS 27 and an Apple Silicon Mac running natively as `arm64`.
-- Detects Vectorworks 2025 or 2026 in `/Applications`.
-- Lets you select a version when both are installed.
-- Marks Vectorworks 2026 support as experimental and requests an additional confirmation.
+- Detects Vectorworks 2024, 2025 or 2026 in `/Applications`.
+- Lets you select a version when multiple versions are installed.
+- Marks Vectorworks 2024 and 2026 support as experimental and requests an additional confirmation.
 - Checks for Homebrew and asks permission before installing it.
 - Installs the Homebrew `libiodbc` formula when required.
 - Confirms that the installed library contains `arm64` code and declares compatibility version `4.0.0`.
@@ -70,7 +71,7 @@ It does **not** disable System Integrity Protection and does **not** create or m
 
 - Apple Silicon Mac
 - macOS 27
-- Vectorworks 2025 or 2026 installed in its standard `/Applications` location
+- Vectorworks 2024, 2025 or 2026 installed in its standard `/Applications` location
 - Administrator access
 - Internet access if Homebrew or `libiodbc` must be installed
 
@@ -107,7 +108,7 @@ chmod +x Fix-Vectorworks-iODBC.command
 For the current script, the expected SHA-256 is:
 
 ```text
-93636230451e16bb683d08e8c4fe489a48f1bf497be333f32a5d2bbc1ae4b6f5
+f4a450a3de2f8878b8f437a6eeaa3dc6694df583620a53031f6d3adcc72dc37b
 ```
 
 If `xattr` reports `No such xattr`, the file is not quarantined; continue with `chmod` and run it. Do not use `xattr -cr` on `/Applications`, your Downloads folder, or another broad directory. Remove quarantine only from the verified script.
@@ -121,7 +122,7 @@ The script may request your administrator password. Characters are not displayed
 --verify         Check the current status without modifying anything.
 --rollback       Restore the most recent backup.
 --list-backups   List available backups.
---version YEAR   Select Vectorworks 2025 or 2026.
+--version YEAR   Select Vectorworks 2024, 2025 or 2026.
 --yes, -y        Automatically approve required installations.
 --no-launch      Do not launch Vectorworks when finished.
 --help, -h       Display help.
@@ -139,10 +140,15 @@ Examples:
 # Experimental, unverified Vectorworks 2026 path
 ./Fix-Vectorworks-iODBC.command --version 2026
 
+# Experimental, unverified Vectorworks 2024 path
+./Fix-Vectorworks-iODBC.command --version 2024
+./Fix-Vectorworks-iODBC.command --verify --version 2024
+./Fix-Vectorworks-iODBC.command --rollback --version 2024
+
 # Verify Vectorworks 2025 without modifying it
 ./Fix-Vectorworks-iODBC.command --verify --version 2025
 
-# List backups for both versions
+# List backups for all three versions
 ./Fix-Vectorworks-iODBC.command --list-backups
 
 # Restore the latest Vectorworks 2025 backup
@@ -154,6 +160,7 @@ Examples:
 Backups are kept outside the application bundle:
 
 ```text
+~/Library/Application Support/Vectorworks 2024 iODBC Fix/backups
 ~/Library/Application Support/Vectorworks 2025 iODBC Fix/backups
 ~/Library/Application Support/Vectorworks 2026 iODBC Fix/backups
 ```
@@ -169,6 +176,13 @@ To restore the latest backup:
 On macOS 27, restoring the original dependency will probably restore the original launch failure as well.
 
 ## Manual diagnosis
+
+For Vectorworks 2024 (unverified):
+
+```bash
+otool -L "/Applications/Vectorworks 2024/Plug-ins/Support.vwlibrary/Contents/MacOS/Support" | grep -i iodbc
+lipo -archs "/Applications/Vectorworks 2024/Plug-ins/Support.vwlibrary/Contents/MacOS/Support"
+```
 
 For Vectorworks 2025:
 
@@ -189,7 +203,7 @@ An affected, unpatched binary reports `/usr/lib/libiodbc.2.dylib`. A successfull
 - Modifying the executable invalidates the vendor signature, so the script replaces it with an ad hoc signature.
 - A Vectorworks update, repair, or reinstallation can overwrite the patch.
 - A future Homebrew update could change library compatibility. The script checks the required architecture and compatibility version before patching.
-- Vectorworks 2026 support is experimental until users confirm the dependency, successful startup, signing, and rollback on a real installation.
+- Vectorworks 2024 and 2026 support is experimental and unverified until dependency, successful startup, signing, and rollback are confirmed on real installations. Adding a version option does not establish compatibility with macOS 27 or other missing libraries.
 - The preferred long-term solution is an official Vectorworks update built for macOS 27.
 
 ## Privacy

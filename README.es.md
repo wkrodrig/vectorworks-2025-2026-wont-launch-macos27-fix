@@ -1,4 +1,4 @@
-# Solución para Vectorworks 2025/2026 que no inicia en macOS 27
+# Solución para Vectorworks 2024/2025/2026 que no inicia en macOS 27
 
 [Read in English](README.md)
 
@@ -13,6 +13,7 @@ Creada por **Wagner R. Ponce — ANIFONIX**.
 
 | Versión | Estado | Observación |
 |---|---|---|
+| Vectorworks 2024 | Experimental, no comprobada | No se ha confirmado una reparación exitosa. Solo aplica si Support contiene código arm64 y la dependencia exacta de iODBC ausente. |
 | Vectorworks 2025 Update 8 | Probada | Funcionó en un Mac Apple Silicon con macOS 27.0. |
 | Vectorworks 2026 | Experimental | Se ha reportado un error similar, pero esta reparación todavía no ha sido probada de forma independiente en 2026. |
 
@@ -49,9 +50,9 @@ No utilices esta solución para una caída distinta o para otra biblioteca ausen
 ## Qué hace
 
 - Exige macOS 27 y un Mac Apple Silicon ejecutándose nativamente como `arm64`.
-- Detecta Vectorworks 2025 o 2026 dentro de `/Applications`.
-- Permite seleccionar la versión si ambas están instaladas.
-- Advierte que la compatibilidad con 2026 es experimental y pide confirmación adicional.
+- Detecta Vectorworks 2024, 2025 o 2026 dentro de `/Applications`.
+- Permite seleccionar la versión si hay varias instaladas.
+- Advierte que la compatibilidad con 2024 y 2026 es experimental y pide confirmación adicional.
 - Comprueba Homebrew y pide permiso antes de instalarlo.
 - Instala `libiodbc` mediante Homebrew cuando hace falta.
 - Verifica arquitectura arm64 y compatibilidad ABI 4.0.0.
@@ -67,7 +68,7 @@ No desactiva SIP ni crea o modifica archivos dentro de `/usr/lib`.
 
 - Mac Apple Silicon
 - macOS 27
-- Vectorworks 2025 o 2026 instalado en su ubicación predeterminada
+- Vectorworks 2024, 2025 o 2026 instalado en su ubicación predeterminada
 - Acceso de administrador
 - Internet si es necesario instalar Homebrew o `libiodbc`
 
@@ -97,7 +98,7 @@ chmod +x Fix-Vectorworks-iODBC.command
 Para el script actual, el SHA-256 esperado es:
 
 ```text
-93636230451e16bb683d08e8c4fe489a48f1bf497be333f32a5d2bbc1ae4b6f5
+f4a450a3de2f8878b8f437a6eeaa3dc6694df583620a53031f6d3adcc72dc37b
 ```
 
 Si `xattr` muestra `No such xattr`, el archivo no está en cuarentena; continúa con `chmod` y ejecútalo. No uses `xattr -cr` sobre `/Applications`, la carpeta Descargas ni ningún directorio amplio. Elimina la cuarentena solamente del script que hayas verificado.
@@ -107,6 +108,21 @@ Seleccionar una versión explícitamente:
 ```bash
 ./Fix-Vectorworks-iODBC.command --version 2025
 ./Fix-Vectorworks-iODBC.command --version 2026
+```
+
+Vectorworks 2024 (experimental y no comprobado):
+
+```bash
+./Fix-Vectorworks-iODBC.command --version 2024
+./Fix-Vectorworks-iODBC.command --verify --version 2024
+./Fix-Vectorworks-iODBC.command --rollback --version 2024
+```
+
+Diagnóstico previo de Vectorworks 2024:
+
+```bash
+otool -L "/Applications/Vectorworks 2024/Plug-ins/Support.vwlibrary/Contents/MacOS/Support" | grep -i iodbc
+lipo -archs "/Applications/Vectorworks 2024/Plug-ins/Support.vwlibrary/Contents/MacOS/Support"
 ```
 
 Verificar sin cambiar nada:
@@ -132,6 +148,7 @@ Mostrar todas las opciones:
 Se guardan fuera de Vectorworks:
 
 ```text
+~/Library/Application Support/Vectorworks 2024 iODBC Fix/backups
 ~/Library/Application Support/Vectorworks 2025 iODBC Fix/backups
 ~/Library/Application Support/Vectorworks 2026 iODBC Fix/backups
 ```
@@ -142,7 +159,7 @@ Cada copia contiene el ejecutable original, su checksum SHA-256, metadatos y la 
 
 - La modificación invalida la firma del proveedor y requiere una firma ad hoc.
 - Una actualización, reparación o reinstalación de Vectorworks puede sobrescribir el parche.
-- La compatibilidad con Vectorworks 2026 seguirá siendo experimental hasta comprobar reparación, inicio, firma y rollback en una instalación real.
+- La compatibilidad con Vectorworks 2024 y 2026 es experimental y no comprobada hasta verificar reparación, inicio, firma y rollback en instalaciones reales. Añadir una opción de versión no confirma compatibilidad general con macOS 27 ni soluciona otras bibliotecas ausentes.
 - La solución definitiva debe ser una actualización oficial de Vectorworks para macOS 27.
 
 ## Privacidad

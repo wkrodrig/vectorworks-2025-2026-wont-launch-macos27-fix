@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Repairs the Vectorworks 2025 or 2026 iODBC dependency on macOS 27 (Apple Silicon).
-# Vectorworks 2025 is tested. Vectorworks 2026 support is experimental and unverified.
+# Repairs the Vectorworks 2024, 2025 or 2026 iODBC dependency on macOS 27 (Apple Silicon).
+# Vectorworks 2025 is tested. Vectorworks 2024 and 2026 are experimental and unverified.
 # This script does not disable SIP and does not write anything inside /usr/lib.
 #
 # Community workaround created by Wagner R. Ponce — ANIFONIX.
@@ -13,6 +13,7 @@ IFS=$'\n\t'
 readonly OLD_DYLIB="/usr/lib/libiodbc.2.dylib"
 readonly NEW_DYLIB="/opt/homebrew/opt/libiodbc/lib/libiodbc.2.dylib"
 readonly BREW_BIN="/opt/homebrew/bin/brew"
+readonly SUPPORTED_YEARS=(2024 2025 2026)
 
 MODE="repair"
 ASSUME_YES=0
@@ -30,7 +31,7 @@ warn() { printf '[WARNING] %s\n' "$*" >&2; }
 die()  { printf '\n[ERROR] %s\n' "$*" >&2; exit 1; }
 
 show_banner() {
-  printf '\nVectorworks 2025/2026 macOS 27 iODBC Fix\n'
+  printf '\nVectorworks 2024/2025/2026 macOS 27 iODBC Fix\n'
   printf 'Community workaround created by Wagner R. Ponce — ANIFONIX\n'
 }
 
@@ -61,17 +62,18 @@ Options:
   --verify         Check the current status without modifying anything.
   --rollback       Restore the most recent backup.
   --list-backups   List available backups.
-  --version YEAR   Select Vectorworks 2025 or 2026.
+  --version YEAR   Select Vectorworks 2024, 2025 or 2026.
   --yes, -y        Automatically approve required installations.
   --no-launch      Do not launch Vectorworks when finished.
   --help, -h       Display this help message.
 
 Compatibility:
+  Vectorworks 2024: experimental and not yet verified
   Vectorworks 2025: tested
   Vectorworks 2026: experimental and not yet verified
 
 If one supported version is installed, it is selected automatically. Use
---version when both versions are installed or for unattended operation.
+--version when multiple versions are installed or for unattended operation.
 EOF
 }
 
@@ -84,7 +86,7 @@ while [[ $# -gt 0 ]]; do
     --rollback) MODE="rollback"; LAUNCH=0 ;;
     --list-backups) MODE="list"; LAUNCH=0 ;;
     --version)
-      [[ $# -ge 2 ]] || die "--version requires 2025 or 2026."
+      [[ $# -ge 2 ]] || die "--version requires 2024, 2025 or 2026."
       VW_YEAR="$2"
       shift
       ;;
@@ -99,8 +101,8 @@ done
 
 configure_version() {
   case "$VW_YEAR" in
-    2025|2026) ;;
-    *) die "Unsupported Vectorworks version: ${VW_YEAR:-not specified}. Choose 2025 or 2026." ;;
+    2024|2025|2026) ;;
+    *) die "Unsupported Vectorworks version: ${VW_YEAR:-not specified}. Choose 2024, 2025 or 2026." ;;
   esac
 
   VW_ROOT="/Applications/Vectorworks $VW_YEAR"
@@ -110,27 +112,34 @@ configure_version() {
   BACKUP_ROOT="$HOME/Library/Application Support/Vectorworks $VW_YEAR iODBC Fix/backups"
 }
 
+is_version_installed() {
+  [[ -d "/Applications/Vectorworks $1" ]]
+}
+
 select_version() {
   if [[ -n "$VW_YEAR" ]]; then
     configure_version
     return
   fi
 
-  local has_2025=0 has_2026=0 answer=""
-  [[ -d "/Applications/Vectorworks 2025" ]] && has_2025=1
-  [[ -d "/Applications/Vectorworks 2026" ]] && has_2026=1
+  local year answer="" choices="" installed=()
+  for year in "${SUPPORTED_YEARS[@]}"; do
+    if is_version_installed "$year"; then
+      installed+=("$year")
+      choices="${choices:+$choices/}$year"
+    fi
+  done
 
-  if [[ $has_2025 -eq 1 && $has_2026 -eq 0 ]]; then
-    VW_YEAR="2025"
-  elif [[ $has_2025 -eq 0 && $has_2026 -eq 1 ]]; then
-    VW_YEAR="2026"
-  elif [[ $has_2025 -eq 1 && $has_2026 -eq 1 ]]; then
-    [[ -t 0 ]] || die "Both versions are installed. Add --version 2025 or --version 2026."
-    printf 'Both Vectorworks 2025 and 2026 are installed. Which version should be used? [2025/2026]: '
+  if [[ ${#installed[@]} -eq 1 ]]; then
+    VW_YEAR="${installed[0]}"
+  elif [[ ${#installed[@]} -gt 1 ]]; then
+    [[ -t 0 ]] || die "Multiple versions are installed ($choices). Add --version YEAR to select one."
+    printf 'Multiple Vectorworks versions are installed. Which version should be used? [%s]: ' "$choices"
     read -r answer
+    is_version_installed "$answer" || die "The selected version is not installed: $answer"
     VW_YEAR="$answer"
   else
-    die "Vectorworks 2025 or 2026 was not found in /Applications."
+    die "Vectorworks 2024, 2025 or 2026 was not found in /Applications."
   fi
   configure_version
 }
@@ -143,12 +152,12 @@ check_macos_version() {
   ok "macOS $os_version detected."
 }
 
-confirm_experimental_2026() {
-  [[ "$VW_YEAR" == "2026" ]] || return 0
-  warn "Vectorworks 2026 support is EXPERIMENTAL and has not been independently tested."
+confirm_experimental() {
+  [[ "$VW_YEAR" == "2024" || "$VW_YEAR" == "2026" ]] || return 0
+  warn "Vectorworks $VW_YEAR support is EXPERIMENTAL and has not been independently tested."
   warn "The script will continue only if the exact same missing iODBC dependency is present."
-  confirm "Continue with the unverified Vectorworks 2026 repair?" || \
-    die "Experimental Vectorworks 2026 repair was canceled by the user."
+  confirm "Continue with the unverified Vectorworks $VW_YEAR repair?" || \
+    die "Experimental Vectorworks $VW_YEAR repair was canceled by the user."
 }
 
 confirm() {
@@ -180,10 +189,13 @@ check_apple_silicon() {
 }
 
 check_paths() {
-  [[ -d "$VW_ROOT" ]] || die "$VW_ROOT does not exist. Install Vectorworks 2025 first."
+  [[ -d "$VW_ROOT" ]] || die "$VW_ROOT does not exist. Install Vectorworks $VW_YEAR first."
   [[ -d "$VW_APP" ]] || die "The application was not found: $VW_APP"
   [[ -d "$SUPPORT_BUNDLE" ]] || die "The support bundle was not found: $SUPPORT_BUNDLE"
   [[ -f "$SUPPORT_BIN" ]] || die "The Support executable was not found: $SUPPORT_BIN"
+  local support_archs
+  support_archs="$(/usr/bin/lipo -archs "$SUPPORT_BIN" 2>/dev/null)" || die "Support could not be inspected with lipo."
+  [[ " $support_archs " == *" arm64 "* ]] || die "Support does not contain arm64 code: $support_archs"
   ok "Vectorworks $VW_YEAR and Support.vwlibrary were found."
 }
 
@@ -307,12 +319,12 @@ repair() {
   check_paths
 
   if has_dependency "$NEW_DYLIB"; then
-    confirm_experimental_2026
+    confirm_experimental
     ensure_brew
     ensure_libiodbc
     info "The patch was already present; the executable was not modified."
   elif has_dependency "$OLD_DYLIB"; then
-    confirm_experimental_2026
+    confirm_experimental
     ensure_brew
     ensure_libiodbc
     make_backup
@@ -353,9 +365,10 @@ list_backups_for_year() {
 }
 
 list_backups() {
-  local found=0
-  if list_backups_for_year 2025; then found=1; fi
-  if list_backups_for_year 2026; then found=1; fi
+  local found=0 year
+  for year in "${SUPPORTED_YEARS[@]}"; do
+    if list_backups_for_year "$year"; then found=1; fi
+  done
   [[ $found -eq 1 ]] || info "No backups are available."
 }
 

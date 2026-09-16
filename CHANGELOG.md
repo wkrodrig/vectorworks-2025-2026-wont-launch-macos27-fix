@@ -4,6 +4,10 @@ All notable changes to this project will be documented here.
 
 ## Unreleased
 
+- Added experimental, unverified Vectorworks 2024 selection, detection, external backups, verification and rollback.
+- Generalized installed-version selection and backup listing for 2024, 2025 and 2026.
+- Require arm64 code in Support before repair as well as verification and rollback.
+
 - Fixed false dependency-detection failures on Universal Binary installations caused by `grep -q` interacting with `set -o pipefail`.
 - Applied the same pipe-safe check to the Homebrew `libiodbc` ABI validation.
 - Thanks to GitHub user `@lahmadinia` for reporting and diagnosing the Universal Binary detection issue.
