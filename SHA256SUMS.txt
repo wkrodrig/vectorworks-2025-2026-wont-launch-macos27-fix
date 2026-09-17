@@ -1,1 +1,1 @@
-f4a450a3de2f8878b8f437a6eeaa3dc6694df583620a53031f6d3adcc72dc37b  Fix-Vectorworks-iODBC.command
+cdc5799c207d2d0135bb35b7b636bc43e08533f90e691405355e591451831860  Fix-Vectorworks-iODBC.command

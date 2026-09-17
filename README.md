@@ -68,6 +68,37 @@ This restores the script's latest backup for that version; it may bring back the
 
 The rest of this page explains compatibility, error screenshots, advanced options, and how the workaround works. **You do not need to run the commands below for normal use.**
 
+## Other versions — optional experimental mode
+
+Normal use still selects only **2024/2025/2026**, with the same repair method and existing backup locations. Other versions are **not automatically enabled**. For a different version, opt in explicitly:
+
+```bash
+# Read-only discovery: no Homebrew installation, signing or application changes.
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --scan
+
+# Show eligible installations and choose ONE by number, even if only one is found.
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental
+
+# Alternatively select the exact main application (example: unverified 2022).
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --app "/Applications/Vectorworks 2022/Vectorworks 2022.app"
+```
+
+Discovery checks standard `/Applications/Vectorworks…/Vectorworks YEAR.app` installations, including `Plug-ins` and `Plug-Ins`. A candidate must have arm64 code in both the main application and Support, and the arm64 Support dependency must be exactly the original system path or this project's Homebrew path, with required compatibility version **4.0.0**. Unsupported layouts, Intel-only components, other libraries and other patches (including `@loader_path`) are rejected. The replacement library checks remain in place. These checks do **not** guarantee all required symbols, successful startup, full functionality or macOS compatibility.
+
+Experimental repair requires an interactive confirmation; `--yes` cannot bypass it. No installations are repaired in bulk. This mode uses the **same external Homebrew library method**, not a bundled-library method.
+
+Use the same application path for verification, backup listing and restoration:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --app "/Applications/Vectorworks 2022/Vectorworks 2022.app" --verify
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --app "/Applications/Vectorworks 2022/Vectorworks 2022.app" --list-backups
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --app "/Applications/Vectorworks 2022/Vectorworks 2022.app" --rollback
+```
+
+Exact standard 2024/2025/2026 applications keep their existing backup locations in either mode. Other installations get a separate namespace based on the SHA-256 of their application path under `~/Library/Application Support/Vectorworks Experimental iODBC Fix/`. They receive **complete Support bundle backups**, with file hashes and the selected application path. Rollback prepares and verifies the saved bundle before replacement and retains the displaced bundle outside the installation for recovery. Keep the application in the same location; moving or reinstalling it can invalidate backup selection. Close Vectorworks before repair or rollback, and do not restore an old backup over an updated application.
+
+**2022 SP6 community evidence:** [Mike Hayes reported a successful manual repair](https://github.com/wkrodrig/vectorworks-2025-2026-wont-launch-macos27-fix/issues/2), including startup, basic drawing, saving and reopening on native Apple Silicon/macOS 27. He used a bundled library with `@loader_path`, **not this script's external Homebrew method**. This experimental automation and its rollback have not been verified on his installation. The report does not validate all 2022 builds or other versions.
+
 ## Compatibility status
 
 | Vectorworks version | Status | Notes |
@@ -75,6 +106,7 @@ The rest of this page explains compatibility, error screenshots, advanced option
 | Vectorworks 2024 | Experimental; community-reported success | P-SH reported success in a private Vectorworks forum conversation. Script revision, macOS version and Mac architecture are pending confirmation. Applicable only if Support contains arm64 code and the exact missing iODBC dependency. |
 | Vectorworks 2025 Update 8 | Tested | Confirmed working on an Apple Silicon Mac with macOS 27.0. |
 | Vectorworks 2026 | Experimental | A similar startup problem involving the Support library has been reported, but this repair has not yet been independently tested on 2026. |
+| Other versions, including 2022 | Opt-in experimental mode; unverified | Dependency-based eligibility only. Mike Hayes's 2022 SP6 manual result used a different library location. |
 
 ### Vectorworks 2024 community report
 
@@ -171,7 +203,7 @@ chmod +x Fix-Vectorworks-iODBC.command
 For the current script, the expected SHA-256 is:
 
 ```text
-f4a450a3de2f8878b8f437a6eeaa3dc6694df583620a53031f6d3adcc72dc37b
+cdc5799c207d2d0135bb35b7b636bc43e08533f90e691405355e591451831860
 ```
 
 If `xattr` reports `No such xattr`, the file is not quarantined; continue with `chmod` and run it. Do not use `xattr -cr` on `/Applications`, your Downloads folder, or another broad directory. Remove quarantine only from the verified script.
@@ -186,6 +218,9 @@ The script may request your administrator password. Characters are not displayed
 --rollback       Restore the most recent backup.
 --list-backups   List available backups.
 --version YEAR   Select Vectorworks 2024, 2025 or 2026.
+--experimental   Opt in to dependency-based discovery of other installations.
+--app PATH       Select one exact main .app (requires --experimental).
+--scan           Read-only discovery (requires --experimental).
 --yes, -y        Automatically approve required installations.
 --no-launch      Do not launch Vectorworks when finished.
 --help, -h       Display help.
