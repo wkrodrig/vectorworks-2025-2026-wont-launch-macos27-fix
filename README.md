@@ -52,7 +52,29 @@ Do not disable SIP or Gatekeeper, and do not remove quarantine from an entire fo
 
 When finished, the script normally opens Vectorworks. If it stops with an error, do not edit the application manually or keep trying unrelated commands. An error can mean this workaround does not apply. If it says the installation is already patched, there is no need to apply it again.
 
-### Optional: undo the repair
+### Another version? Easy experimental-mode command
+
+If your version is not 2024, 2025 or 2026 (for example, 2022 or 2023), download **the current script** using the link in step 2 and close Vectorworks. In Terminal, use this command **instead of the last line in step 4**:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental
+```
+
+**Do not change the command or add a year.** The script searches for installations that pass its checks and displays a numbered list. Type the **list number**, not the year, and press Return. You must select an installation even if there is only one option. Then read the warning and enter `y` if you agree to an experimental repair. Follow the installation and password instructions in step 5.
+
+If your installation is not found or is marked `[SKIPPED]`, it failed a check or its location/layout is not supported. **Do not force the repair or edit the script to bypass checks.** If `--experimental` is reported as an unknown option, your copy is outdated: download the current file again.
+
+This mode **does not guarantee an untested version will work**. It requires macOS 27, native Apple Silicon and the specific iODBC dependency. It does not repair every arm64 version, and discovery makes no changes before selection and confirmation.
+
+To undo a repair performed in this mode, close Vectorworks and run:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --rollback
+```
+
+Select **the same installation** by its list number and confirm restoration. A backup created by this script is required, and the original startup error may return.
+
+### Optional: undo the normal repair (2024/2025/2026)
 
 Close Vectorworks, open Terminal, and run the following command. Replace `2025` with `2024` or `2026` if that was the version you repaired:
 

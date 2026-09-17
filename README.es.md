@@ -52,7 +52,29 @@ No desactives SIP ni Gatekeeper y no elimines la cuarentena de una carpeta enter
 
 Al terminar, el script normalmente abre Vectorworks. Si se detiene con un error, no modifiques la aplicación manualmente ni pruebes comandos ajenos a esta guía. Puede significar que esta solución no aplica a tu caso. Si indica que ya está parcheado, no necesitas aplicar el cambio otra vez.
 
-### Opcional: deshacer la reparación
+### ¿Tienes otra versión? Comando fácil para el modo experimental
+
+Si tu versión no es 2024, 2025 o 2026 (por ejemplo, 2022 o 2023), descarga **el script actual** del enlace del paso 2 y cierra Vectorworks. En Terminal, usa este comando **en lugar de la última línea del paso 4**:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental
+```
+
+**No cambies nada del comando ni añadas el año.** El script busca las instalaciones que cumplen sus controles y muestra una lista numerada. Escribe el **número de la lista**, no el año, y pulsa Enter. Aunque solo haya una opción, debes seleccionarla. Después lee la advertencia y escribe `y` si aceptas continuar con una reparación experimental. Sigue las indicaciones sobre instalación y contraseña del paso 5.
+
+Si no encuentra tu instalación o aparece como `[SKIPPED]`, significa que no cumple alguno de los controles o que su ubicación/estructura no está admitida. **No fuerces la reparación ni cambies el script para saltar los controles.** Si dice que `--experimental` es una opción desconocida, has descargado una copia antigua: vuelve a descargar el archivo actual.
+
+Este modo **no garantiza que una versión no probada funcione**. Exige macOS 27, Apple Silicon nativo y la dependencia específica de iODBC. No repara todas las versiones solo por tener arm64 y no modifica nada durante la búsqueda, antes de seleccionar y confirmar.
+
+Para deshacer una reparación realizada en este modo, cierra Vectorworks y ejecuta:
+
+```bash
+/bin/bash "$HOME/Downloads/Fix-Vectorworks-iODBC.command" --experimental --rollback
+```
+
+Selecciona **la misma instalación** por su número y confirma la restauración. Necesita el respaldo creado por este script y puede volver el error original.
+
+### Opcional: deshacer la reparación habitual (2024/2025/2026)
 
 Cierra Vectorworks, abre Terminal y ejecuta este comando. Sustituye `2025` por `2024` o `2026` si esa fue la versión reparada:
 
