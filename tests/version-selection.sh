@@ -3,6 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 readonly SUPPORTED_YEARS=(2024 2025 2026)
+EXPERIMENTAL=0
 eval "$(/usr/bin/awk '
   /^(configure_version|select_version|confirm_experimental|list_backups)\(\) [{]/ { copying=1 }
   copying { print }
